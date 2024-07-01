@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.container{
+    max-width:1070px;
+    margin-inline: auto;
+}
+
+.active{
+    border: 2px solid;
+    border-image-source: linear-gradient(to top right, #4fc4af 50%,#9ad9cc 50%);
+    border-image-slice: 1;
+}
+html{
+    scroll-behavior: smooth;
+}
