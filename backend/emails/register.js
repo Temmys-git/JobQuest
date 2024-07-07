@@ -1,17 +1,19 @@
 const nodemailer = require('nodemailer');
 
-const registerEmail = ({user})=>{
+const registerEmail = (user)=>{
+    console.log(user)
     const tranporter = nodemailer.createTransport({
         service:'gmail',
         auth:'yunusabdullateef95@gmail.com',
-        pass:''
+        pass:'knhfndotebjaylgq'
+        
     })
 
     const mailOptions = {
         from:'yunusabdullateef95@gmail.com',
         to:user.email,
         subject:'jobQuest',
-        html:'<h1> you have registered successfully'
+        html:'<h1> you have registered successfully</h1>'
     }
 
     tranporter.sendMail(mailOptions,(error,res)=>{

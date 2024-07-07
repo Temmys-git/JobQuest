@@ -8,25 +8,24 @@ import Pagignate from "../components/Paginate";
 
 
 const Home = ()=>{
-    const [jobLists,setJobLists] = useState(jobs);
+    const [jobLists] = useState(jobs);
     const [search,setSearch] = useState('');
     const [isSearch,setIsSearch] = useState(false)
     const browseId = useRef(null);
     const [currentPage,setCurrentPage] = useState(1);
-    const [jobPerPage,setJobPerPage] = useState(6);
+    const [jobPerPage] = useState(6);
     const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
     const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
     const currentJobs = jobLists.slice(firstIndex,lastIndex);
     const totalPage = Math.ceil(jobLists.length/jobPerPage);//4
    
-    const filterJobs2 = (jobs)=>{
-        return jobs.filter(job=>job.title.toLowerCase().includes(search.toLowerCase()))
+    const filterJobs = (jobs)=>{
+        return jobs.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()))
     }
     
     const handleSearch = (e)=>{
         const value = e.target.value;
         setSearch(value)
-        console.log(value)
         if(value.length === 0){
             setIsSearch(false)
         }else{
@@ -34,15 +33,13 @@ const Home = ()=>{
         }
     }
 
-    const filterJobs = isSearch ?  filterJobs2(jobLists) : filterJobs2(currentJobs)
+    const jobData = isSearch ?  filterJobs(jobLists) : filterJobs(currentJobs)
 
     const paginationProps = {jobLists,totalPage,firstIndex,lastIndex,currentPage,setCurrentPage,setIsSearch,setSearch}
 
-    const browseJob = ()=>{
-        const id = browseId.current.getAttribute('id').slice(1);
-        const element = document.getElementById(id);
+    const browseJob = (e)=>{
+        const element = browseId.current
         const position = element.offsetTop;
-        console.log(position)
         window.scroll({
             left:0,
             top:position
@@ -58,7 +55,7 @@ const Home = ()=>{
               <div  className="flex-[0.5]" >
               <h1 className=" text-5xl font-sans font-[900]"> We link you up with job recruiters</h1>
                 <p className="mt-6">Connecting you with top recruiters to find your perfect job match. Explore opportunities, receive career guidance, and advance your career with our support. Your next job is just a connection away.</p>
-                <button onClick={browseJob} ref={browseId} id='#browse' className='px-7 py-3 rounded-lg capitalize bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] text-white text-[0.9rem] mt-8 font-sans'>browse job</button>
+                <button onClick={browseJob} id='#browse' className='px-7 py-3 rounded-lg capitalize bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] text-white text-[0.9rem] mt-8 font-sans'>browse job</button>
                 {/* <Button text='browse job' styles='px-7 py-3 rounded-lg capitalize bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] text-white text-[0.9rem] mt-8 font-sans'/> */}
               </div>
            <div className="h-[350px] flex-[0.5]">
@@ -71,7 +68,7 @@ const Home = ()=>{
         {/* section2 */}
 
         <section className="mt-16">
-            <h1 id='browse' className=" text-center text-5xl  font-sans font-[900] mx-auto mt-3 mb-8"> Search for available jobs</h1>
+            <h1 ref={browseId} className=" text-center text-5xl  font-sans font-[900] mx-auto mt-3 mb-8"> Search for available jobs</h1>
 
             {/* search */}
             <form  className="flex relative ">
@@ -83,7 +80,7 @@ const Home = ()=>{
             {/* list of jobs */}
             <article className="flex  flex-wrap justify-center gap-5 mt-10">
                 {
-                    filterJobs.length == 0 ? <h1 className="text-4xl text-bolder">Job is not available</h1>: filterJobs.map((job)=>{
+                    jobData.length == 0 ? <h1 className="text-4xl text-bolder">Job is not available</h1>: jobData.map((job)=>{
                         const {id,image,title,description} = job
                         return (
                             <div key={id} className="w-[29%] rounded-lg bg-white shadow pb-4 ">

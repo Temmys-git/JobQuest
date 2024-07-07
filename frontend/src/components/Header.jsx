@@ -23,7 +23,7 @@ const Header = () => {
         </nav>
 
            {
-            isLoggedIn ? (
+            !isLoggedIn ? (
                 <div className='flex gap-2 items-center'>
             <p>Welcome Fatai Uth...</p>
             <Link to="/myAccount" className='capitalize'>my account</Link>

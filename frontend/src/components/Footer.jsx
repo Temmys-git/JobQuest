@@ -13,7 +13,7 @@ const Footer =()=>{
                     <div className='flex justify-between'>
                                     <div className='flex-[0.4] '>
                                 <h1 className='text-3xl'>JobQuest</h1>
-                                <p className='text-black mt-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis dolore non vel quo nostrum tempora doloremque facere quod eius mollitia?</p>
+                                <p className='text-white mt-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis dolore non vel quo nostrum tempora doloremque facere quod eius mollitia?</p>
                             </div>
 
                             <ul className=' flex gap-7' >
@@ -24,7 +24,7 @@ const Footer =()=>{
                                 }
                             </ul>
                     </div>
-                <div className='border-t border-[#000] py-5 mt-4'>
+                <div className='border-t border-[#fff] py-5 mt-4'>
                 <p className='w-[max-content] ml-auto'>@{year} all copy right reserved</p>
                 </div>
                 </div>

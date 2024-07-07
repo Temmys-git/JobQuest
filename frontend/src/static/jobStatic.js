@@ -135,8 +135,31 @@ const jobs = [
     },
   ];
   
+  const reviews = [
+      {
+        id:5,
+        description:'The job is excellent'
+      },
+      {
+        id:4,
+        description:'The job is very good'
+      },
+      {
+        id:3,
+        description:'The job is bad '
+      },
+      {
+        id:2,
+        description:'The job is worse '
+      },
+      {
+        id:1,
+        description:'The job sucks '
+      },
+  ]
 
 
-export {jobs}
+
+export {jobs,reviews}
 
   

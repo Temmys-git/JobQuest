@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Home from './pages/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -12,13 +12,19 @@ import Applicants from './pages/Applicants';
 import PostJob from './pages/PostJob';
 import Footer from './components/Footer';
 import ApplyJob from './pages/ApplyJob';
+import Rating from './components/Rating';
 
 function App() {
+
+  const [modal,setModal] = useState(false)
 
   return (
     <>
         <BrowserRouter>
         <Header/>
+        {
+          modal&&<Rating setModal={setModal}/>
+        }
             <Routes>
                 <Route path='/' element={<Home/>}/>
                 <Route path='/register' element={<SignUp/>}/>
@@ -28,7 +34,7 @@ function App() {
                 <Route path='/postJobs' element={<PostJob/>}/>
                 <Route path='/applyJob' element={<ApplyJob/>}/>
 
-                <Route path='/myAccount' element={<MyAccount/>}/>
+                <Route path='/myAccount' element={<MyAccount modal={modal} setModal={setModal}/>}/>
                 <Route path='/myAccount/job/:id/applicants' element={<Applicants/>}/>
                 <Route path='/jobs/:id' element={<Job/>}/>
             </Routes>

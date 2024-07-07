@@ -28,4 +28,10 @@ Job.virtual('applicants',{
     localField:'_id',
     foreignField:'job'
 });
+
+Job.virtual('ratings',{
+    ref:'Rating',
+    localField:'_id',
+    foreignField:'job'
+});
 module.exports = mongoose.model('Job',Job);

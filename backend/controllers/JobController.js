@@ -1,5 +1,6 @@
 const Applicant = require('../models/Applicant');
 const Job = require('../models/Job');
+const Rating = require('../models/Rating');
 
 const getJobs = async(req,res)=>{
     const jobs = await Job.find().populate('applicants');
@@ -28,7 +29,6 @@ const updateJob = async(req,res)=>{
     if(!job){
         return res.status(404).json({message:'job not found'})
     }
-
     const newJob = await Job.findByIdAndUpdate(id, req.body, {new:true})
     return res.status(201).json({newJob,message:'job deleted successfully'});
 
@@ -44,25 +44,24 @@ const deleteJob = async(req,res)=>{
         return res.status(201).json({message:'job deleted successfully'});
 }
 
-const applyJob = async(req,res)=>{
-    // const id = req.params.id;
-    const applicant = await Applicant.create(req.body);
-    // const jobs = await Job.find().populate('applicant');
-    return res.status(201).json(applicant);
+const rateJob = async(req,res)=>{
+    const {review,rating,user,job} = req.body;
+    let ratings = await Rating.findOne({user,job})
+    if(ratings){
+        ratings.rating = rating
+        ratings.review = review
+        await ratings.save();
+        return res.status(200).json(ratings);
+    }
+    rating = await Rating.create(req.body);
+    return res.status(200).json(ratings);
 }
-
-const acceptJob = async()=>{
-
-}
-
-
 
 module.exports = {
     getJobs,
     storeJob,
-    applyJob,
     getSingleJob,
     updateJob,
-    deleteJob
-
+    deleteJob,
+    rateJob
 }
