@@ -1,12 +1,16 @@
 const express = require('express');
 const jobRoutes = require('./routes/job');
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const authRoutes = require('./routes/auth');
 const { login, register } = require('./controllers/authController');
 const connectDb = require('./db');
 const applicantRoutes = require('./routes/applicant');
 const app = express();
 connectDb();
+
+app.use('/upload/images', express.static('./upload/images'))
+app.use(cors())
 app.use(bodyParser.json())
 app.get('/',(req,res)=>{
     res.json({message:'hello joblisting'});

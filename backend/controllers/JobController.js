@@ -9,7 +9,7 @@ const getJobs = async(req,res)=>{
 
 
 const storeJob = async(req,res)=>{
-    const imageUrl = `${req.protocol}://${req.get('host')}/${req.file.originalname}`
+    const imageUrl = `${req.protocol}://${req.get('host')}/upload/images/${req.file.originalname}`
     const jobs = await Job.create({...req.body,imageUrl});
     return res.status(201).json({message:'job created successfully',jobs});
 }

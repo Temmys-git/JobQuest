@@ -2,23 +2,35 @@ import React, { useEffect, useRef, useState } from "react";
 import cheers from '../assets/images/joblisting_pic.jpeg';
 import {Link} from 'react-router-dom';
 import Button from "./Button";
-import { jobs } from "../static/jobStatic";
+// import { jobs } from "../static/jobStatic";
 import Header from "../components/Header";
 import Pagignate from "../components/Paginate";
+import { useDispatch, useSelector } from "react-redux";
+import { getJobs } from "../../features/jobSlice";
 
 
 const Home = ()=>{
-    const [jobLists] = useState(jobs);
+    // const [job] = useState(jobs);
     const [search,setSearch] = useState('');
     const [isSearch,setIsSearch] = useState(false)
     const browseId = useRef(null);
     const [currentPage,setCurrentPage] = useState(1);
+    const {job,status} = useSelector((state)=>state.jobs)
+    const dispatch = useDispatch();
     const [jobPerPage] = useState(6);
-    const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
-    const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
-    const currentJobs = jobLists.slice(firstIndex,lastIndex);
-    const totalPage = Math.ceil(jobLists.length/jobPerPage);//4
+    // const totalPage = Math.ceil(status=== 'pending'?18:job.length/jobPerPage);//4
+    console.log(job,'da')
+    const fetchJobs = async()=>{
+        await dispatch(getJobs()).unwrap()
+    }
+    useEffect(()=>{
+        fetchJobs()
+    },[])
    
+        const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
+        const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
+        const currentJobs = job.slice(firstIndex,lastIndex);
+        const totalPage = Math.ceil(job.length/jobPerPage);//4
     const filterJobs = (jobs)=>{
         return jobs.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()))
     }
@@ -33,9 +45,9 @@ const Home = ()=>{
         }
     }
 
-    const jobData = isSearch ?  filterJobs(jobLists) : filterJobs(currentJobs)
+    const jobData = isSearch ?  filterJobs(job) : filterJobs(currentJobs)
 
-    const paginationProps = {jobLists,totalPage,firstIndex,lastIndex,currentPage,setCurrentPage,setIsSearch,setSearch}
+    const paginationProps = {job,totalPage,firstIndex,lastIndex,currentPage,setCurrentPage,setIsSearch,setSearch}
 
     const browseJob = (e)=>{
         const element = browseId.current
@@ -44,6 +56,10 @@ const Home = ()=>{
             left:0,
             top:position
         })
+    }
+
+    if(status === 'pending'){
+        return <h1>pending</h1>
     }
     return (
         <section className="container" >
@@ -81,10 +97,10 @@ const Home = ()=>{
             <article className="flex  flex-wrap justify-center gap-5 mt-10">
                 {
                     jobData.length == 0 ? <h1 className="text-4xl text-bolder">Job is not available</h1>: jobData.map((job)=>{
-                        const {id,image,title,description} = job
+                        const {id,imageUrl,title,description} = job
                         return (
                             <div key={id} className="w-[29%] rounded-lg bg-white shadow pb-4 ">
-                                <img src={image} alt={title} className="w-full h-[160px] rounded-t-lg"/>
+                                <img src={imageUrl} alt={title} className="w-full h-[160px] rounded-t-lg"/>
                                <div className="px-5">
                                <h1 className="font-bold text-lg mt-5">{title}</h1>
                                 <p>{description.slice(0,70)}.... <Link to={`/jobs/${id}`} className="text-[#448c7f]">learn more</Link></p>
@@ -108,3 +124,16 @@ const Home = ()=>{
 }
 
 export default Home;
+
+
+
+// const [job] = useState(jobs);
+// const [search,setSearch] = useState('');
+// const [isSearch,setIsSearch] = useState(false)
+// const browseId = useRef(null);
+// const [currentPage,setCurrentPage] = useState(1);
+// const [jobPerPage] = useState(6);
+// const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
+// const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
+// const currentJobs = job.slice(firstIndex,lastIndex);
+// const totalPage = Math.ceil(job.length/jobPerPage);//4

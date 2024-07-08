@@ -7,8 +7,8 @@ const applyJob = async(req,res)=>{
 
 const acceptJob = async(req,res)=>{
     const id = req.params.id;
-    const applicant = await Applicant.findByIdAndUpdate(id,{status:'accepted'},{new:true});
-    return res.status(200).json(applicant)
+    const applicant = await Applicant.findBydAndUpdate(id,{status:'accepted'},{new:true});
+    return res.status(200).json(applicant);
 }
 
 

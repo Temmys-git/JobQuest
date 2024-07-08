@@ -14,7 +14,6 @@ const MyAccount = ({modal,setModal})=>{
         <>
             <section className="container ">
                 <h1 className="text-center mt-16 text-5xl font-bold">My Account</h1>
-            
             <div className="flex justify-between mt-8">
                 {
                     myAccountData.map((data,index)=>{

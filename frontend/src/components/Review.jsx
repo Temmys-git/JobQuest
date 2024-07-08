@@ -12,16 +12,15 @@ const Reviews = ({isRated,point})=>{
                 {
                     reviews.map(({id,description},index)=>{
                         return (
-                            <li key={id} className={`flex justify-between  items-center rounded-sm shadow-md px-7 py-4 mb-4 ${point+1 === id && "shadow-ms shadow-[#a8c8c2]"}`}>
+                            <li key={id} className={`flex justify-between  items-center rounded-sm shadow-md px-7 py-4 mb-4 ${isRated&&point+1 === id && "shadow-ms shadow-[#a8c8c2]"}`}>
                             <p >{description}</p>
                             { 
                                 point+1 === id ?
                                 <Stars
-                                styles=""
                                 isRated={isRated} 
                                 point={point}/>
                                 :
-                               <div className="flex justify-between flex-[0.7]">
+                               <div className="flex justify-end gap-4 flex-[0.7]">
                                    {
                                       Array(5).fill(0).map((star,index)=>{
                                         return <FaRegStar key={index}/>
