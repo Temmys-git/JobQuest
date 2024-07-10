@@ -11,7 +11,8 @@ connectDb();
 
 app.use('/upload/images', express.static('./upload/images'))
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({limit:'500mb', extended: true }));
+app.use(bodyParser.json({limit:'500mb'}))
 app.get('/',(req,res)=>{
     res.json({message:'hello joblisting'});
 })

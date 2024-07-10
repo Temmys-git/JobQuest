@@ -13,9 +13,8 @@ const register = async(req,res)=>{
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password,salt);
     const user = await User.create({...req.body,password:hashedPassword});
-    registerEmail(user);
-    return res.status(201).json({user,message:'User registered successfully'});
-}
+    const token = jwt.sign({_id:user._id},JWT_KEY,{expiresIn:'1d'});
+    return res.status(201).json({user,token})}
 
 const login = async(req,res)=>{
     const {email,password} = req.body;

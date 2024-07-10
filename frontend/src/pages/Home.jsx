@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import cheers from '../assets/images/joblisting_pic.jpeg';
 import {Link} from 'react-router-dom';
 import Button from "./Button";
-// import { jobs } from "../static/jobStatic";
+import { Circles } from 'react-loader-spinner'
 import Header from "../components/Header";
 import Pagignate from "../components/Paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,27 +10,27 @@ import { getJobs } from "../../features/jobSlice";
 
 
 const Home = ()=>{
-    // const [job] = useState(jobs);
     const [search,setSearch] = useState('');
     const [isSearch,setIsSearch] = useState(false)
     const browseId = useRef(null);
     const [currentPage,setCurrentPage] = useState(1);
-    const {job,status} = useSelector((state)=>state.jobs)
+    const {jobs,status} = useSelector((state)=>state.jobs)
     const dispatch = useDispatch();
     const [jobPerPage] = useState(6);
-    // const totalPage = Math.ceil(status=== 'pending'?18:job.length/jobPerPage);//4
-    console.log(job,'da')
+
+
     const fetchJobs = async()=>{
         await dispatch(getJobs()).unwrap()
     }
+
     useEffect(()=>{
         fetchJobs()
     },[])
    
         const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
         const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
-        const currentJobs = job.slice(firstIndex,lastIndex);
-        const totalPage = Math.ceil(job.length/jobPerPage);//4
+        const currentJobs = jobs.slice(firstIndex,lastIndex);
+        const totalPage = Math.ceil(jobs.length/jobPerPage);//4
     const filterJobs = (jobs)=>{
         return jobs.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()))
     }
@@ -45,9 +45,9 @@ const Home = ()=>{
         }
     }
 
-    const jobData = isSearch ?  filterJobs(job) : filterJobs(currentJobs)
+    const jobData = isSearch ?  filterJobs(jobs) : filterJobs(currentJobs)
 
-    const paginationProps = {job,totalPage,firstIndex,lastIndex,currentPage,setCurrentPage,setIsSearch,setSearch}
+    const paginationProps = {jobs,totalPage,firstIndex,lastIndex,currentPage,setCurrentPage,setIsSearch,setSearch}
 
     const browseJob = (e)=>{
         const element = browseId.current
@@ -58,15 +58,13 @@ const Home = ()=>{
         })
     }
 
-    if(status === 'pending'){
-        return <h1>pending</h1>
-    }
+   
     return (
         <section className="container" >
             {/* section1 */}
             <section >
             {/* text */}
-
+        
             <article className="flex items-center gap-9  pt-16">
               <div  className="flex-[0.5]" >
               <h1 className=" text-5xl font-sans font-[900]"> We link you up with job recruiters</h1>
@@ -96,6 +94,15 @@ const Home = ()=>{
             {/* list of jobs */}
             <article className="flex  flex-wrap justify-center gap-5 mt-10">
                 {
+                    status === 'pending'? <Circles
+                    height="80"
+                    width="80"
+                    color="#448c7f"
+                    ariaLabel="circles-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                    />:
                     jobData.length == 0 ? <h1 className="text-4xl text-bolder">Job is not available</h1>: jobData.map((job)=>{
                         const {id,imageUrl,title,description} = job
                         return (

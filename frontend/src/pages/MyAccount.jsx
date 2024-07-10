@@ -1,15 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegTrashAlt,FaEye } from "react-icons/fa";
 import { LuPencil } from "react-icons/lu";
 // import { jobs } from "../static/jobStatic";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { myAccountData } from "../static/myAccountData";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteJob, getJobs } from "../../features/jobSlice";
+import { Circles } from "react-loader-spinner";
 
 
 const MyAccount = ({modal,setModal})=>{
     const [value,setValue] = useState(0);
+
+    const myJobs = useSelector((state)=>state.jobs);
+    console.log(myJobs)
+    const dispatch = useDispatch();
+
+    const fetchJobs = async(id)=>{
+        await dispatch(getJobs(id)).unwrap()
+    }
+
+    useEffect(()=>{
+        fetchJobs()
+    },[])
     
     const jobs = myAccountData[value].data
+
+    const _deleteJob = async(id)=>{
+        await dispatch(deleteJob(id)).unwrap();
+        fetchJobs()
+
+        console.log(id)
+    }
     return(
         <>
             <section className="container ">
@@ -27,38 +49,55 @@ const MyAccount = ({modal,setModal})=>{
             </div>
                 {value === 0  && <h2 className="text-right mt-5">Applicants</h2>}
                     <div>
+                    <div>
                 
+                {
+                    myJobs.status === 'pending' ? (<Circles
+                        height="80"
+                        width="80"
+                        color="#448c7f"
+                        ariaLabel="circles-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                        />):(
 
-                        {
-                            jobs.map(job=>{
-                                return(
-                                    <div key={job.id} className="flex justify-between shadow-md items-center  mt-7 p-4 ">
-                                        <p className="text-lg font-sans font-[600] flex-[0.5]">{job.title}</p>
-                                        {
-                                            value === 0 ? (<div className="flex-[0.5]">
-
-                                                <div className=" flex justify-between ">
-                                            <LuPencil className="text-2xl text-green-500 cursor-pointer" />
-                                                <FaRegTrashAlt className="text-red-500 text-2xl cursor-pointer"/>
-                                                <div className="flex items-center gap-6 ">
-                                                    <Link to={`/myAccount/job/${job.id}/applicants`}><FaEye className="text-blue-500 text-2xl cursor-pointer"/> </Link>
-                                                    <p> 67</p>
-                                                </div>
-                                       </div>
-                                            </div>):(
-                                        <div>
-                                            {/* <p className="text-yellow-500">Pending</p> */}
-                                            <p className="text-green-500">Accepted</p>
-                                            {/* <p className="text-red-500">Declined</p> */}
-                                            <button onClick={()=>setModal(true)} className="px-2 py-1 mx-auto block rounded-lg capitalize bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] text-white text-[0.9rem] mt-1 font-sans" >rate</button>
+                                myJobs.jobs.map(job=>{
+                                    return(
+                                        <div key={job.id} className="flex justify-between shadow-md items-center  mt-7 p-4 ">
+                                            <p className="text-lg font-sans font-[600] flex-[0.5]">{job.title}</p>
+                                            {
+                                                value === 0 ? (<div className="flex-[0.5]">
+    
+                                                    <div className=" flex justify-between ">
+                                                        {/* edit job */}
+                                                <Link to={`myJobs/${job.id}`}>
+                                                <LuPencil className="text-2xl text-green-500 cursor-pointer" />
+                                                </Link>
+                                                    {/* delete job */}
+                                                    <FaRegTrashAlt className="text-red-500 text-2xl cursor-pointer"  onClick={()=>_deleteJob(job.id)}/>
+                                                    <div className="flex items-center gap-6 ">
+                                                        <Link to={`/myAccount/job/${job.id}/applicants`}><FaEye className="text-blue-500 text-2xl cursor-pointer"/> </Link>
+                                                        <p> 67</p>
+                                                    </div>
+                                           </div>
+                                                </div>):(
+                                            <div>
+                                                {/* <p className="text-yellow-500">Pending</p> */}
+                                                <p className="text-green-500">Accepted</p>
+                                                {/* <p className="text-red-500">Declined</p> */}
+                                                <button onClick={()=>setModal(true)} className="px-2 py-1 mx-auto block rounded-lg capitalize bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] text-white text-[0.9rem] mt-1 font-sans" >rate</button>
+                                            </div>
+    
+                                           )
+                                            }
                                         </div>
-
-                                       )
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
+                                    )
+                                })
+                            
+                        )
+                }
+            </div>
                     </div>
 
             </section>

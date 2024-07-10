@@ -9,10 +9,11 @@ import Job from './components/Job';
 import SignUp from './pages/SignUp';
 import MyAccount from './pages/MyAccount';
 import Applicants from './pages/Applicants';
-import PostJob from './pages/PostJob';
 import Footer from './components/Footer';
 import ApplyJob from './pages/ApplyJob';
 import Rating from './components/Rating';
+import PostJob from './pages/job/PostJob';
+import EditJob from './pages/job/EditJob';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
 
                 <Route path='/myAccount' element={<MyAccount modal={modal} setModal={setModal}/>}/>
                 <Route path='/myAccount/job/:id/applicants' element={<Applicants/>}/>
+                <Route path='/myAccount/myJobs/:id' element={<EditJob/>}/>
                 <Route path='/jobs/:id' element={<Job/>}/>
             </Routes>
           <Footer/>

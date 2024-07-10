@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import Button from '../pages/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { links } from '../static/links';
 import NavigationLinks from './NavigationLinks';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../features/userSlice';
 
 const Header = () => {
-    const [isLoggedIn] = useState(false)
+
+    const navigate = useNavigate();
+    const {user} = useSelector((state)=>state.user);
+    const dispatch = useDispatch();
+
+    console.log('hdgd'.split(' '))
+    const handleLogout = ()=>{
+        dispatch(logout())
+        navigate('/login')
+    }
 
     return (
         <header className=' text-white bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%]  py-6 '>
@@ -23,11 +34,11 @@ const Header = () => {
         </nav>
 
            {
-            !isLoggedIn ? (
+            user ? (
                 <div className='flex gap-2 items-center'>
-            <p>Welcome Fatai Uth...</p>
+            <p>Welcome {user?.name.split(' ')[0]}...</p>
             <Link to="/myAccount" className='capitalize'>my account</Link>
-            <Button text='logout' styles='capitalize px-4 py-3 rounded-lg border-[2px] border-white text-white text-[0.9rem] font-sans' />
+            <Button text='logout' event={handleLogout} styles='capitalize px-4 py-3 rounded-lg border-[2px] border-white text-white text-[0.9rem] font-sans' />
         </div>
            ):( 
                  <div className=''>

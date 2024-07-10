@@ -9,6 +9,7 @@ const getJobs = async(req,res)=>{
 
 
 const storeJob = async(req,res)=>{
+    console.log(req.body)
     const imageUrl = `${req.protocol}://${req.get('host')}/upload/images/${req.file.originalname}`
     const jobs = await Job.create({...req.body,imageUrl});
     return res.status(201).json({message:'job created successfully',jobs});
@@ -24,6 +25,7 @@ const getSingleJob = async(req,res)=>{
 }
 
 const updateJob = async(req,res)=>{
+    const imageUrl = `${req.protocol}://${req.get('host')}/upload/images/${req.file?.originalname}`
     const id = req.params.id;
     const job = await Job.findById(id);
     if(!job){
@@ -36,6 +38,7 @@ const updateJob = async(req,res)=>{
 
 const deleteJob = async(req,res)=>{
         const id = req.params.id;
+        console.log(id)
         const job = await Job.findById(id);
         if(!job){
              return res.status(404).json({message:'job not found'})
