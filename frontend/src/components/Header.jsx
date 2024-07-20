@@ -36,7 +36,7 @@ const Header = () => {
            {
             user ? (
                 <div className='flex gap-2 items-center'>
-            <p>Welcome {user?.name.split(' ')[0]}...</p>
+            <p>Welcome {user?.name?.split(' ')[0]}...</p>
             <Link to="/myAccount" className='capitalize'>my account</Link>
             <Button text='logout' event={handleLogout} styles='capitalize px-4 py-3 rounded-lg border-[2px] border-white text-white text-[0.9rem] font-sans' />
         </div>

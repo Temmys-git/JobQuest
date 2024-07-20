@@ -11,10 +11,10 @@ const PostJob = () => {
   const [imageFile,setImageFile] = useState('');
   const dispatch = useDispatch();
   // const {_id} = useSelector((state)=>state.user)
-  const {user:{_id}} = useSelector((state)=>state.user)
-console.log(_id)
+  const {user} = useSelector((state)=>state.user)
+// console.log(_id)
 
-  const data = {title,description,image:imageFile,user:_id}
+  const data = {title,description,image:imageFile,user:user?._id}
 
   const  createJob = async(e)=>{
       e.preventDefault();
