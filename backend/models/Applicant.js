@@ -27,7 +27,7 @@ const Applicant = mongoose.Schema({
    },
    comment:{
         type:String,
-        required:[true, 'qualification is required']
+        required:[true, 'comment is required']
    },
    status:{
      type:String,

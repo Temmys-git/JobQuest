@@ -1,4 +1,4 @@
-export const users = [
+ const users = [
     {   
         id:1,
         age:56,
@@ -101,3 +101,16 @@ export const users = [
     }
 ];
 
+const application = {
+    name:'',     
+    email:'',    
+    age:'',      
+    gender:'male',   
+    phone:'',    
+    qualification:'Bsc',
+    job:'',      
+    comment:'',
+    
+  }
+
+  export {users,application }

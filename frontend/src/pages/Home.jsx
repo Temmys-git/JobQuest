@@ -112,7 +112,7 @@ const Home = ()=>{
                                <h1 className="font-bold text-lg mt-5">{title}</h1>
                                 <p>{description.slice(0,70)}.... <Link to={`/jobs/${id}`} className="text-[#448c7f]">learn more</Link></p>
                                 {id}
-                                <Link to='/applyJob' className='text-lg text-center  w-full py-2 capitalize rounded-md bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] hover:bg-[#4fc4af] text-white text-[0.9rem] mt-4 font-sans block'>apply</Link>
+                                <Link to={`/applyJob/${id}`} className='text-lg text-center  w-full py-2 capitalize rounded-md bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] hover:bg-[#4fc4af] text-white text-[0.9rem] mt-4 font-sans block'>apply</Link>
                                </div>
                             </div>
                         )

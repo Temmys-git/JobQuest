@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Button from '../pages/Button';
-import { getSingleJob } from '../../features/jobSlice';
+import Button from '../Button';
+import { getSingleJob } from '../../../features/jobSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Job = ()=> {
+const SingleJob = ()=> {
     const {id} = useParams();
     const [show,setShow] = useState(false)
     const dispatch = useDispatch();
@@ -41,4 +41,4 @@ const Job = ()=> {
     )
 }
 
-export default Job
+export default SingleJob

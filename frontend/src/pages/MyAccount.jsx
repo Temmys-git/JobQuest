@@ -28,9 +28,6 @@ const MyAccount = ({modal,setModal})=>{
 
     const _deleteJob = async(id)=>{
         await dispatch(deleteJob(id)).unwrap();
-        fetchJobs()
-
-        console.log(id)
     }
     return(
         <>
@@ -52,15 +49,19 @@ const MyAccount = ({modal,setModal})=>{
                     <div>
                 
                 {
-                    myJobs.status === 'pending' ? (<Circles
-                        height="80"
-                        width="80"
-                        color="#448c7f"
-                        ariaLabel="circles-loading"
-                        wrapperStyle={{}}
-                        wrapperClass=""
-                        visible={true}
-                        />):(
+                    myJobs.status === 'pending' ? (
+                        <div className="mx-auto mt-20 w-[max-content]">
+                            <Circles
+                                height="80"
+                                width="80"
+                                color="#448c7f"
+                                ariaLabel="circles-loading"
+                                wrapperStyle={{}}
+                                wrapperClass=""
+                                visible={true}
+                        />
+                        </div>
+                    ):(
 
                                 myJobs.jobs.map(job=>{
                                     return(
@@ -78,7 +79,7 @@ const MyAccount = ({modal,setModal})=>{
                                                     <FaRegTrashAlt className="text-red-500 text-2xl cursor-pointer"  onClick={()=>_deleteJob(job.id)}/>
                                                     <div className="flex items-center gap-6 ">
                                                         <Link to={`/myAccount/job/${job.id}/applicants`}><FaEye className="text-blue-500 text-2xl cursor-pointer"/> </Link>
-                                                        <p> 67</p>
+                                                        <p> {job.applicants.length}</p>
                                                     </div>
                                            </div>
                                                 </div>):(

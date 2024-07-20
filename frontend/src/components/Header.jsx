@@ -12,7 +12,6 @@ const Header = () => {
     const {user} = useSelector((state)=>state.user);
     const dispatch = useDispatch();
 
-    console.log('hdgd'.split(' '))
     const handleLogout = ()=>{
         dispatch(logout())
         navigate('/login')

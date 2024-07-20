@@ -88,7 +88,6 @@ export const deleteJob = createAsyncThunk('job/deleteJob',async(id)=>{
 export const getSingleJob = createAsyncThunk('job/getSingleJob',async(payload)=>{
     try{
         const {data} = await axios.get(url+'/jobs/'+payload);
-        console.log(data,'here')
         return data
     }catch(e){
         console.log(e)
@@ -135,6 +134,20 @@ const jobSlice = createSlice({
                         state.status = 'pending'
                     })
                     .addCase(getSingleJob.rejected,(state,action)=>{
+                        state.error = action.payload
+                        state.status = 'rejected'
+                    })
+                    //delete job
+                    .addCase(deleteJob.fulfilled,(state,action)=>{
+                        state.jobs = state.jobs.filter(job=>job.id !== action.meta.arg)
+                        console.log(state.jobs)
+                        console.log(action,'here')
+                        state.status = 'success'
+                    })
+                    .addCase(deleteJob.pending,(state,action)=>{
+                        state.status = 'pending'
+                    })
+                    .addCase(deleteJob.rejected,(state,action)=>{
                         state.error = action.payload
                         state.status = 'rejected'
                     })
