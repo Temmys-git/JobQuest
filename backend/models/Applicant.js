@@ -37,6 +37,11 @@ const Applicant = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Job',
         required:true
+   },
+   user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        required:true
    }
 
 },

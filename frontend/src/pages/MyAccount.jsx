@@ -5,23 +5,29 @@ import { LuPencil } from "react-icons/lu";
 import { Link, useParams } from "react-router-dom";
 import { myAccountData } from "../static/myAccountData";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteJob, getJobs } from "../../features/jobSlice";
+import { deleteJob, getJobs, getMyJobs } from "../../features/jobSlice";
 import { Circles } from "react-loader-spinner";
 
 
 const MyAccount = ({modal,setModal})=>{
     const [value,setValue] = useState(0);
 
-    const myJobs = useSelector((state)=>state.jobs);
+    const {myJobs,status} = useSelector((state)=>state.jobs);
     console.log(myJobs)
     const dispatch = useDispatch();
 
     const fetchJobs = async(id)=>{
         await dispatch(getJobs(id)).unwrap()
     }
+    const fetchMyJobs = async(id)=>{
+        await dispatch(getMyJobs()).unwrap()
+    }
 
     useEffect(()=>{
         fetchJobs()
+    },[])
+    useEffect(()=>{
+        fetchMyJobs()
     },[])
     
     const jobs = myAccountData[value].data
@@ -49,7 +55,7 @@ const MyAccount = ({modal,setModal})=>{
                     <div>
                 
                 {
-                    myJobs.status === 'pending' ? (
+                    status === 'pending' ? (
                         <div className="mx-auto mt-20 w-[max-content]">
                             <Circles
                                 height="80"
@@ -63,7 +69,13 @@ const MyAccount = ({modal,setModal})=>{
                         </div>
                     ):(
 
-                                myJobs.jobs.map(job=>{
+                              myJobs?.length === 0  ? (
+                                <div>
+                                    <Link to="/postJobs" className="text-center block text-lg cursor-pointer">Post job </Link>
+                                   
+                                </div>
+                              ):(
+                                myJobs?.map(job=>{
                                     return(
                                         <div key={job.id} className="flex justify-between shadow-md items-center  mt-7 p-4 ">
                                             <p className="text-lg font-sans font-[600] flex-[0.5]">{job.title}</p>
@@ -95,6 +107,7 @@ const MyAccount = ({modal,setModal})=>{
                                         </div>
                                     )
                                 })
+                              )
                             
                         )
                 }
@@ -102,6 +115,7 @@ const MyAccount = ({modal,setModal})=>{
                     </div>
 
             </section>
+        {/* <h1>hello</h1> */}
         </>
     )
 }

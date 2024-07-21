@@ -9,10 +9,11 @@ const SingleJob = ()=> {
     const [show,setShow] = useState(false)
     const dispatch = useDispatch();
     const {singleJob,status} = useSelector((state)=>state.jobs);
-
+    console.log(singleJob)
     const fetchSingleJob = async()=>{
         await dispatch(getSingleJob(id)).unwrap();
     }
+
     useEffect(()=>{
         fetchSingleJob()
     },[id])

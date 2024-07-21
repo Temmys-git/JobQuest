@@ -53,10 +53,10 @@ const userSlice = createSlice({
     extraReducers(builder){
             builder
                     .addCase(login.fulfilled,(state,action)=>{
+                        console.log(state.user)
                         state.user = action.payload.user
                         state.token = action.payload.token
                         state.status = 'success'
-                        console.log(state.status)
                     })
                     .addCase(login.pending,(state)=>{
                         state.status = 'pending'

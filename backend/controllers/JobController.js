@@ -60,9 +60,18 @@ const rateJob = async(req,res)=>{
     return res.status(200).json(ratings);
 }
 
+const myJobs = async(req,res)=>{
+    // const user = '668307eb04859d5ac00f3449'
+    console.log(req.user);
+    const user = '669d1731b397d43aec74f662'
+    const jobs = await Job.find({user}).populate('applicants');
+    return res.status(201).json(jobs);
+}
+
 module.exports = {
     getJobs,
     storeJob,
+    myJobs,
     getSingleJob,
     updateJob,
     deleteJob,

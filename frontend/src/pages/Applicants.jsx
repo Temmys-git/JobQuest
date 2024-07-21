@@ -13,6 +13,7 @@ import { acceptApplicant, declineApplicant } from '../../features/applicantSlice
 const Applicants =()=>{
     const {id} = useParams();
     const [itemId,setItemId] = useState(null)
+    const [update,setUpdate] = useState(true)
     const [show,setShow] = useState(false)
 
     const dispatch = useDispatch();
@@ -23,13 +24,17 @@ const Applicants =()=>{
     }
     const _declineApplicant = async(id)=>{
         await dispatch(declineApplicant(id)).unwrap();
+        setUpdate(!update)
     }
     const _acceptApplicant = async(id)=>{
         await dispatch(acceptApplicant(id)).unwrap();
+        setUpdate(!update)
+
+        
     }
     useEffect(()=>{
         fetchSingleJob()
-    },[id])
+    },[id,update])
    
 
     if(status==='pending'){
@@ -51,22 +56,11 @@ const Applicants =()=>{
         <section className='container '>
             <h1 className="text-center my-9 text-5xl font-bold font-sans capitalize  bg-clip-text text-transparent bg-gradient-to-tl from-[#448c7f]  from-[50%] to-[50%] to-[#9ad9cc] py-3 ">{singleJob.title} applicants</h1>
             {
-                //  status === 'pending'? (
-                //     <div className='mx-auto w-[max-content] mt-40'>
-                        // <Circles
-                //         height="80"
-                //         width="80"
-                //         color="#448c7f"
-                //         ariaLabel="circles-loading"
-                //         wrapperStyle={{}}
-                //         wrapperClass=""
-                //         visible={true}
-                //     />
-                //     </div>
-                //  ):
-                   singleJob.applicants?.map(applicant=>{
-                //    users.map(applicant=>{
-                    console.log(applicant)
+              
+              singleJob.applicants?.length === 0 ? (
+                <p className='text-center text-lg'>You currently have no applicants for this job</p>
+              ): (
+                singleJob.applicants?.map(applicant=>{
                     const {name,email,phone,qualification,gender,comment,age,status,_id} = applicant
                     return (
                         <div key={_id} className='flex flex-col md:flex-row justify-between md:items-center '>
@@ -129,6 +123,7 @@ const Applicants =()=>{
                         </div>
                     )
                 })
+                   )
             }
         </section>
 
@@ -137,19 +132,3 @@ const Applicants =()=>{
 
 export default Applicants
 
-
-// const [singleJob,setSingleJob] = useState({});
-// const [itemId,setItemId] = useState(null)
-// const [show,setShow] = useState(false)
-
-
-
-// const getSingleJob = ()=>{
-//     const jobItem = jobs.find(job=>job.id === Number(id));
-//     setSingleJob(jobItem)
-// }
-// // getSingleJob();
-
-// useEffect(()=>{
-//     getSingleJob();
-// },[])

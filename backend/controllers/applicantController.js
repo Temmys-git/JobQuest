@@ -4,6 +4,11 @@ const applyJob = async(req,res)=>{
     const applicant = await Applicant.create(req.body);
     return res.status(201).json(applicant);
 }
+const myApplication = async(req,res)=>{
+    const user = '667ec00ce257185a8c1d5e3b'
+    const applicant = await Applicant.find({user});
+    return res.status(201).json(applicant);
+}
 
 const acceptJob = async(req,res)=>{
     const id = req.params.id;

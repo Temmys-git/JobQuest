@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { MdOutlineUploadFile, MdUploadFile } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { storeJob } from '../../../features/jobSlice';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const PostJob = () => {
@@ -10,27 +11,22 @@ const PostJob = () => {
   const [image,setImage] = useState('');
   const [imageFile,setImageFile] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const {_id} = useSelector((state)=>state.user)
-  const {user} = useSelector((state)=>state.user)
+  const {user,status} = useSelector((state)=>state.user)
 // console.log(_id)
 
   const data = {title,description,image:imageFile,user:user?._id}
 
   const  createJob = async(e)=>{
       e.preventDefault();
-      console.log(data)
-      // const formData = new FormData();
-      // formData.append('title',title)
-      // formData.append('image',imageFile)
-      // formData.append('description',description);
-      // console.log(formData)
       await dispatch(storeJob(data)).unwrap();
+      navigate('/')
   }
 
   const handleImage = (e)=>{
     const file = e.target.files[0];
     setImageFile(file);
-    // console.log(imageFile)
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     console.log(file)
@@ -40,11 +36,6 @@ const PostJob = () => {
     }
 
   }
-
-  // const handleSubmit = (e)=>{
-  //   e.preventDefault();
-  //   console.log(data);
-  // }
 
   return (
     <section>
@@ -78,8 +69,7 @@ const PostJob = () => {
         </div>
 
         <button type='submit'
-        //  onClick={(e)=>createJob(e)} 
-        className='mt-7 px- block uppercase rounded-lg w-full py-4 text-white bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%]'>apply</button>
+        className='mt-7 px- block uppercase rounded-lg w-full py-4 text-white bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%]'>post job</button>
     </form>
 </section>
   )

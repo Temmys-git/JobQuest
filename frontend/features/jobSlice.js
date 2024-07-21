@@ -1,9 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
+import Cookies from 'js-cookie'
+
 const url = 'http://localhost:8000'
 
 const initialState = {
     jobs:[],
+    myJobs:[],
     singleJob:{},
     error:null,
     status:'idle'
@@ -14,6 +17,21 @@ export const getJobs = createAsyncThunk('job/getJobs',async()=>{
     
     try{
         const {data} = await axios.get(url+'/jobs');
+        return data
+    }catch(e){
+        console.log(e)
+    }
+
+})
+
+export const getMyJobs = createAsyncThunk('job/myJobs',async()=>{
+    console.log(Cookies.get('token'))
+    try{
+        const {data} = await axios.get(url+'/jobs/myJobs',{
+            headers:{
+                Authorization:`Bearer ${Cookies.get('token')}`
+            }
+        });
         return data
     }catch(e){
         console.log(e)
@@ -36,25 +54,6 @@ export const storeJob = createAsyncThunk('job/storeJob',async(payload)=>{
 
 })
 
-
-
-// export const editJob = createAsyncThunk('job/editJob',async(payload)=>{
-//     const {id,job} = payload;
-//     console.log(job)
-//     try{
-//         const {data} = await axios.put(url+'/jobs/'+id,{...payload.job},{
-//             headers:{
-//                 'Content-Type':'multipart/form-data'
-//             },
-//             params:id
-//         });
-//         return data
-//     }catch(e){
-//         console.log(e)
-//     }
-
-// })
-
 export const editJob = createAsyncThunk('job/storeJob',async(payload)=>{
     
     try{
@@ -72,12 +71,7 @@ export const editJob = createAsyncThunk('job/storeJob',async(payload)=>{
 
 export const deleteJob = createAsyncThunk('job/deleteJob',async(id)=>{
     try{
-        const {data} = await axios.delete(url+'/jobs/'+id,{},{
-            headers:{
-                'Content-Type':'multipart/form-data'
-            },
-            params:id
-        });
+        const {data} = await axios.delete(url+'/jobs/'+id);
         return data
     }catch(e){
         console.log(e)
@@ -101,7 +95,7 @@ const jobSlice = createSlice({
     reducers:{},
 
     extraReducers(builder){
-            builder
+            builder //get jobs
                     .addCase(getJobs.fulfilled,(state,action)=>{
                         state.jobs = action.payload
                         state.status = 'success'
@@ -110,6 +104,17 @@ const jobSlice = createSlice({
                         state.status = 'pending'
                     })
                     .addCase(getJobs.rejected,(state,action)=>{
+                        state.error = action.payload
+                        state.status = 'rejected'
+                    })//myJobs
+                    .addCase(getMyJobs.pending,(state,action)=>{
+                        state.status = 'pending'
+                    })
+                    .addCase(getMyJobs.fulfilled,(state,action)=>{
+                        state.myJobs = action.payload
+                        state.status = 'success'
+                    })
+                    .addCase(getMyJobs.rejected,(state,action)=>{
                         state.error = action.payload
                         state.status = 'rejected'
                     })

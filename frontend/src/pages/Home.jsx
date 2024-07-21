@@ -29,10 +29,10 @@ const Home = ()=>{
    
         const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
         const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
-        const currentJobs = jobs.slice(firstIndex,lastIndex);
-        const totalPage = Math.ceil(jobs.length/jobPerPage);//4
+        const currentJobs = jobs?.slice(firstIndex,lastIndex);
+        const totalPage = Math.ceil(jobs?.length/jobPerPage);//4
     const filterJobs = (jobs)=>{
-        return jobs.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()))
+        return jobs?.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()))
     }
     
     const handleSearch = (e)=>{
@@ -103,7 +103,7 @@ const Home = ()=>{
                     wrapperClass=""
                     visible={true}
                     />:
-                    jobData.length == 0 ? <h1 className="text-4xl text-bolder">Job is not available</h1>: jobData.map((job)=>{
+                    jobData?.length == 0 ? <h1 className="text-4xl text-bolder">Job is not available</h1>: jobData?.map((job)=>{
                         const {id,imageUrl,title,description} = job
                         return (
                             <div key={id} className="w-[29%] rounded-lg bg-white shadow pb-4 ">
