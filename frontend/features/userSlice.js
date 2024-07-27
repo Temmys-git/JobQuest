@@ -15,7 +15,6 @@ export const login = createAsyncThunk('login',async(payload)=>{
     
     try{
         const {data} = await axios.post(url+'/login',payload);
-        console.log(data)
         Cookies.set('user',JSON.stringify(data.user))
         Cookies.set('token',JSON.stringify(data.token))
         return data

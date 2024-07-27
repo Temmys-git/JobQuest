@@ -1,14 +1,31 @@
 import React, { useState } from "react";
 import Stars from "./Stars";
 import Reviews from "./Review";
+import { rateJob } from "../../features/jobSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { reviews } from "../static/jobStatic";
+import { setModal } from "../../features/appStateSlice";
 
-const Rating =({setModal})=>{
+const Rating =()=>{
     const [point,setPoint] = useState(0);
     const [isRated,setIsRated] = useState(false)
+    const dispatch = useDispatch()
+    const {user} = useSelector((state)=>state.user)
+    const {myApplications} = useSelector(state=>state.myApplication)
+    const {jobId} = useSelector(state=>state.appState)
+    const {myJob:{_id}} = myApplications.find(job=>job.myJob._id === jobId )
 
-    const handleStars =(index)=>{
+    const handleStars = async(index)=>{
         setPoint(index)
         setIsRated(true)
+    }
+    
+    const handleRating = async()=>{
+        const getReview = reviews.find(({id})=>id === point+1);
+        const data = {rating:point+1,user:user._id,job:_id,review:getReview.description}
+        await dispatch(rateJob(data)).unwrap()
+        dispatch(setModal(false))
+        
     }
 
     return(
@@ -22,6 +39,7 @@ const Rating =({setModal})=>{
                         isRated={isRated} 
                         point={point}
                         handleStars={handleStars}
+                        handleRating={handleRating}
                         styles="text-3xl cursor-pointer "
                         />
                     </div>
@@ -31,8 +49,8 @@ const Rating =({setModal})=>{
                  </div>
 
                     <div className="flex gap-5 mt-6 w-[max-content] mx-auto">
-                        <button className="bg-gray-200 px-6 py-3 rounded-md" onClick={()=>setModal(false)} >Cancel</button>
-                        <button className="bg-[#448c7f] px-6 py-3 rounded-md text-white">Done</button>
+                        <button className="bg-gray-200 px-6 py-3 rounded-md" onClick={()=>dispatch(setModal(false))} >Cancel</button>
+                        <button className="bg-[#448c7f] px-6 py-3 rounded-md text-white" onClick={handleRating}>Done</button>
                     </div>
                 </div>
         </div>

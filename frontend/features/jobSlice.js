@@ -25,11 +25,11 @@ export const getJobs = createAsyncThunk('job/getJobs',async()=>{
 })
 
 export const getMyJobs = createAsyncThunk('job/myJobs',async()=>{
-    console.log(Cookies.get('token'))
     try{
+      
         const {data} = await axios.get(url+'/jobs/myJobs',{
             headers:{
-                Authorization:`Bearer ${Cookies.get('token')}`
+                Authorization:`Bearer ${JSON.parse(Cookies.get('token'))}`
             }
         });
         return data
@@ -47,6 +47,17 @@ export const storeJob = createAsyncThunk('job/storeJob',async(payload)=>{
                 'Content-Type':'multipart/form-data'
             }
         });
+        return data
+    }catch(e){
+        console.log(e)
+    }
+
+})
+
+export const rateJob = createAsyncThunk('job/rateJob',async(payload)=>{
+    
+    try{
+        const {data} = await axios.post(url+'/jobs/'+payload.job,payload);
         return data
     }catch(e){
         console.log(e)
@@ -139,6 +150,17 @@ const jobSlice = createSlice({
                         state.status = 'pending'
                     })
                     .addCase(getSingleJob.rejected,(state,action)=>{
+                        state.error = action.payload
+                        state.status = 'rejected'
+                    })
+                    //rateJob
+                    .addCase(rateJob.fulfilled,(state,action)=>{
+                        state.status = 'success'
+                    })
+                    .addCase(rateJob.pending,(state,action)=>{
+                        state.status = 'pending'
+                    })
+                    .addCase(rateJob.rejected,(state,action)=>{
                         state.error = action.payload
                         state.status = 'rejected'
                     })

@@ -3,7 +3,7 @@ const Job = require('../models/Job');
 const Rating = require('../models/Rating');
 
 const getJobs = async(req,res)=>{
-    const jobs = await Job.find().populate('applicants');
+    const jobs = await Job.find().populate('applicants').populate('ratings');
     return res.status(201).json(jobs);
 }
 
@@ -17,7 +17,7 @@ const storeJob = async(req,res)=>{
 
 const getSingleJob = async(req,res)=>{
     const id = req.params.id;
-    const job = await Job.findById(id).populate('applicants');
+    const job = await Job.findById(id).populate('applicants').populate('ratings');
     if(!job){
          return res.status(404).json({message:'job not found'})
     }
@@ -49,22 +49,21 @@ const deleteJob = async(req,res)=>{
 
 const rateJob = async(req,res)=>{
     const {review,rating,user,job} = req.body;
-    let ratings = await Rating.findOne({user,job})
-    if(ratings){
-        ratings.rating = rating
-        ratings.review = review
-        await ratings.save();
-        return res.status(200).json(ratings);
-    }
-    rating = await Rating.create(req.body);
-    return res.status(200).json(ratings);
+    // let _rating = await Rating.findOne({user,job})
+    // if(_rating){
+    //     _rating.rating = rating
+    //     _rating.review = review
+    //     await _rating.save();
+    //     return res.status(200).json(_rating);
+    // }
+    const _rating = await Rating.create(req.body);
+    return res.status(200).json(_rating);
 }
 
 const myJobs = async(req,res)=>{
-    // const user = '668307eb04859d5ac00f3449'
     console.log(req.user);
-    const user = '669d1731b397d43aec74f662'
-    const jobs = await Job.find({user}).populate('applicants');
+    const user = req.user._id
+    const jobs = await Job.find({user}).populate('applicants').populate('ratings');
     return res.status(201).json(jobs);
 }
 

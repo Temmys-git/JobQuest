@@ -12,7 +12,8 @@ connectDb();
 app.use('/upload/images', express.static('./upload/images'))
 app.use(cors())
 app.use(bodyParser.urlencoded({limit:'500mb', extended: true }));
-app.use(bodyParser.json({limit:'500mb'}))
+app.use(bodyParser.json({limit:'500mb'}));
+
 app.get('/',(req,res)=>{
     res.json({message:'hello joblisting'});
 })
@@ -21,6 +22,6 @@ app.get('/',(req,res)=>{
 app.post('/login',login)
 app.post('/register',register)
 app.use('/jobs',jobRoutes);
-app.use('/jobs/applicant',applicantRoutes);
+app.use('/applicants',applicantRoutes);
 
 app.listen(8000,()=> console.log('app is running'));

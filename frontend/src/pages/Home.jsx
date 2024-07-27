@@ -14,7 +14,7 @@ const Home = ()=>{
     const [isSearch,setIsSearch] = useState(false)
     const browseId = useRef(null);
     const [currentPage,setCurrentPage] = useState(1);
-    const {jobs,status} = useSelector((state)=>state.jobs)
+    const {jobs,status} = useSelector((state)=>state?.jobs)
     const dispatch = useDispatch();
     const [jobPerPage] = useState(6);
 
@@ -32,7 +32,7 @@ const Home = ()=>{
         const currentJobs = jobs?.slice(firstIndex,lastIndex);
         const totalPage = Math.ceil(jobs?.length/jobPerPage);//4
     const filterJobs = (jobs)=>{
-        return jobs?.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()))
+        return jobs?.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()));
     }
     
     const handleSearch = (e)=>{

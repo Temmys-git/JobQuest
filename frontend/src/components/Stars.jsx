@@ -3,7 +3,8 @@ import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 
 
-const Stars =({isRated,handleStars,point,styles})=>{
+const Stars =({isRated,handleStars,handleRating,point,styles})=>{
+    
     return (
         <div className="flex gap-5 justify-center ">
         {

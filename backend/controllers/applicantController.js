@@ -5,8 +5,10 @@ const applyJob = async(req,res)=>{
     return res.status(201).json(applicant);
 }
 const myApplication = async(req,res)=>{
-    const user = '667ec00ce257185a8c1d5e3b'
-    const applicant = await Applicant.find({user});
+    // const user = '669d1731b397d43aec74f662'
+    const user = req.user._id.toString()
+    console.log(user)
+    const applicant = await Applicant.find({user}).populate('myJob');
     return res.status(201).json(applicant);
 }
 
@@ -23,4 +25,4 @@ const declineJob = async(req,res)=>{
     return res.status(200).json(applicant)
 }
 
-module.exports = {applyJob,acceptJob,declineJob}
+module.exports = {applyJob,acceptJob,declineJob,myApplication}

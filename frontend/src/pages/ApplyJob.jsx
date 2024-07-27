@@ -9,8 +9,9 @@ const ApplyJob = () => {
     const {id} = useParams();
     const dispatch = useDispatch();
     const [applicant,setApplicant] = useState(application);
+    const {user} = useSelector((state)=>state.user)
 
-    const data = {...applicant,job:id}
+    const data = {...applicant,job:id,user:user._id}
     const handleApply = async(e)=>{
         e.preventDefault();
         console.log(data)

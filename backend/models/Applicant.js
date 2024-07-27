@@ -46,8 +46,18 @@ const Applicant = mongoose.Schema({
 
 },
 {
-    timestamps:true
+    timestamps:true,
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
 })
+
+
+Applicant.virtual('myJob',{
+     ref:'Job',
+     localField:'job',
+     foreignField:'_id',
+     justOne:true
+ });
 
 module.exports = mongoose.model('Applicant',Applicant)
 
