@@ -64,7 +64,7 @@ const PostJob = () => {
 
         <div>
              <label className='capitalize block mb-2'>description</label>
-              <textarea name="description" onChange={(e)=>setDescription(e.target.value)} placeholder='Tell us about your work experience' className='w-full h-[100px]  py-4 pl-4 outline-none bg-slate-100  rounded-lg'></textarea>
+              <textarea name="description" onChange={(e)=>setDescription(e.target.value)} placeholder='Tell us about the job' className='w-full h-[100px]  py-4 pl-4 outline-none bg-slate-100  rounded-lg'></textarea>
 
         </div>
 

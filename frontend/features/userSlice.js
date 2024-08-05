@@ -7,19 +7,23 @@ const user = Cookies.get('user')
 const initialState = {
     user:user?JSON.parse(user):null,
     token:Cookies.get('token'),
+    error:null,
     status:'idle'
 }
 
 
-export const login = createAsyncThunk('login',async(payload)=>{
+export const login = createAsyncThunk('login',async(payload,{rejectWithValue})=>{
     
     try{
         const {data} = await axios.post(url+'/login',payload);
-        Cookies.set('user',JSON.stringify(data.user))
-        Cookies.set('token',JSON.stringify(data.token))
+        if(data){
+            Cookies.set('user',JSON.stringify(data?.user))
+            Cookies.set('token',JSON.stringify(data?.token))
+        }
         return data
     }catch(e){
-        console.log(e)
+        rejectWithValue(e.response.data)
+        console.log(e.response.data)
     }
 
 })
@@ -51,27 +55,25 @@ const userSlice = createSlice({
 
     extraReducers(builder){
             builder
-                    .addCase(login.fulfilled,(state,action)=>{
-                        console.log(state.user)
-                        state.user = action.payload.user
-                        state.token = action.payload.token
-                        state.status = 'success'
-                    })
                     .addCase(login.pending,(state)=>{
                         state.status = 'pending'
+                    })
+                    .addCase(login.fulfilled,(state,action)=>{
+                        state.user = action.payload?.user
+                        state.token = action.payload?.token
+                        state.status = 'success'
                     })
                     .addCase(login.rejected,(state,action)=>{
                         state.error = action.payload
                         state.status = 'rejected'
                     })
-                   
-                    .addCase(register.fulfilled,(state,action)=>{
-                        state.user = action.payload.user
-                        state.token = action.payload.token
-                        state.status = 'success'
-                    })
                     .addCase(register.pending,(state)=>{
                         state.status = 'pending'
+                    })
+                    .addCase(register.fulfilled,(state,action)=>{
+                        state.user = action.payload?.user
+                        state.token = action.payload?.token
+                        state.status = 'success'
                     })
                     .addCase(register.rejected,(state)=>{
                         state.error = action.payload
@@ -80,6 +82,6 @@ const userSlice = createSlice({
     }
 })
 
-export const {logout} = userSlice.actions
+export const {logout} = userSlice.actions;
 
 export default userSlice.reducer

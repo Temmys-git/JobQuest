@@ -14,7 +14,8 @@ const MyAccount = ()=>{
     const [isJob,setIsJob] = useState(false);
     const {myJobs,status} = useSelector((state)=>state.jobs);
     const _myApplications = useSelector((state)=>state.myApplication);
-    console.log(_myApplications,'here')
+    console.log(new Date(myJobs[0]?.createdAt).getTime())
+    console.log(myJobs)
     const dispatch = useDispatch();
 
     const fetchJobs = async(id)=>{
@@ -52,17 +53,7 @@ const MyAccount = ()=>{
         <>
             <section className="container ">
                 <h1 className="text-center mt-16 text-5xl font-bold">My Account</h1>
-            {/* <div className="flex justify-between mt-8">
-                {
-                    myAccountData.map((data,index)=>{
-                        const {id,tab} = data
-                        return (
-                            <button key={id} onClick={()=>setValue(index)} className={`mt-5 py-4 rounded-br-md border-bf-[2px] bg-gray-100  capitalize flex-[0.5] font-[400] border-[green] ${index === value && "border-b-[2px] border-green-500" }`}>{tab}</button>
-                        )
-                    })
-                }
-
-</div> */}
+           
                 <div className="flex justify-between mt-8">
 
                            <button  onClick={()=>setIsJob(false)} className={`mt-5 py-4 rounded-br-md border-bf-[2px] bg-gray-100  capitalize flex-[0.5] font-[400] border-[green] ${!isJob && "border-b-[2px] border-green-500" }`}>my jobs </button>
@@ -90,7 +81,10 @@ const MyAccount = ()=>{
                     ):(
 
                              !isJob ? (
-                                myJobs?.map(job=>{
+                                myJobs?.map((_job)=>{
+                                    
+                                    return {..._job,createdAt:new Date(_job.createdAt).getTime()}
+                                }).sort((a,b)=>b.createdAt-a.createdAt).map(job=>{
                                     return(
                                         <div key={job.id} className="flex justify-between shadow-md items-center  mt-7 p-4 ">
                                             <p className="text-lg font-sans font-[600] flex-[0.5]">{job.title}</p>
@@ -111,9 +105,7 @@ const MyAccount = ()=>{
                                            </div>
                                                 </div>):(
                                             <div>
-                                                {/* <p className="text-yellow-500">Pending</p> */}
                                                 <p className="text-green-500">Accepted</p>
-                                                {/* <p className="text-red-500">Declined</p> */}
                                                 <button onClick={handleJobRating} className="px-2 py-1 mx-auto block rounded-lg capitalize bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] text-white text-[0.9rem] mt-1 font-sans" >rate</button>
                                             </div>
     

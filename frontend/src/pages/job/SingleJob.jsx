@@ -11,7 +11,6 @@ const SingleJob = ()=> {
     const dispatch = useDispatch();
     const {singleJob,status} = useSelector((state)=>state.jobs);
     const {user} = useSelector((state)=>state.user);
-    console.log(user)
     const fetchSingleJob = async()=>{
         await dispatch(getSingleJob(id)).unwrap();
     }
@@ -24,8 +23,8 @@ const SingleJob = ()=> {
         return <h1>Loading....</h1>
     }
 
-    const rating = (singleJob?.ratings?.reduce((acc,rate)=> acc+rate.rating,0)/singleJob?.ratings?.length).toFixed(1)
-    console.log(rating)
+    const totalRate = (singleJob?.ratings?.reduce((acc,rate)=> acc+rate.rating,0)/singleJob?.ratings?.length).toFixed(1)
+    console.log(singleJob?.ratings)
 
     return (
        <section className='container pb-28 px-4'>
@@ -45,7 +44,7 @@ const SingleJob = ()=> {
 
                    <div key={index}>
                         {
-                            index+1<=rating ?
+                            index+1<=totalRate ?
                             <FaStar className='text-2xl text-[#448c7f]'/>:
                             <FaRegStar className='text-2xl'/>
 
@@ -57,6 +56,7 @@ const SingleJob = ()=> {
             })
         }
                 </div>
+                {/* {totalRate} */}
                 <Button text="Apply now" styles="w-full text-lg py-2.5 bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%] text-white mt-5 rounded-md"/>
             </div>
             </article>

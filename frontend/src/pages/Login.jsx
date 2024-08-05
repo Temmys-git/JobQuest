@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PiEnvelopeSimpleThin } from "react-icons/pi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,16 +10,23 @@ const Login =()=> {
     const [password,setPassword] = useState('')
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {status} = useSelector((state)=>state.user)
-    
-    const user = {email,password}
+    const {status,user,error} = useSelector((state)=>state.user)
+    console.log(user)
+    console.log(error)
+    const _user = {email,password}
+
     const handleLogin =async(e)=>{
         e.preventDefault();
-        await dispatch(login(user)).unwrap();
-        if(status === 'success'){
+        await dispatch(login(_user)).unwrap();
+
+    }
+
+    useEffect(()=>{
+        if(user){
             navigate('/')
         }
-    }
+    },[user])
+   
 
     return (
         <section>
@@ -32,7 +39,7 @@ const Login =()=> {
                 <div className='rounded-lg flex-[0.5] bg-gradient-to-tl from-[#448c7f] to-[50%] to-[#9ad9cc] from-[50%]'>
                     <div className='mt-5'>
                         <h1 className='font-bold mt-16 font-sans text-5xl'>Hello, friends</h1>
-                        <p className='mt-9 text-lg px-24'>Enter your personal details and start jouney with us</p>
+                        <p className='mt-9 text-lg px-24'>Enter your personal details and start journey with us</p>
                         <Link to='/register' className=' mx-auto mt-7 max-w-[200px] block uppercase rounded-full py-4 text-white border-[2px] border-white'>sign up</Link>
                     </div>
                 </div>
@@ -66,9 +73,3 @@ const Login =()=> {
         )
     }
 export default Login;
-
-        // const user = {
-        //     name:"yunus abdullateef",
-        //     email:"a@gmail.com",
-        //     password:"123456"
-        //   }const 

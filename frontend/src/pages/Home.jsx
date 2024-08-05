@@ -3,10 +3,10 @@ import cheers from '../assets/images/joblisting_pic.jpeg';
 import {Link} from 'react-router-dom';
 import Button from "./Button";
 import { Circles } from 'react-loader-spinner'
-import Header from "../components/Header";
 import Pagignate from "../components/Paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { getJobs } from "../../features/jobSlice";
+import { jobs2 } from "../static/jobStatic";
 
 
 const Home = ()=>{
@@ -15,22 +15,25 @@ const Home = ()=>{
     const browseId = useRef(null);
     const [currentPage,setCurrentPage] = useState(1);
     const {jobs,status} = useSelector((state)=>state?.jobs)
+    const user = useSelector((state)=>state.user)
+    console.log(jobs,'dc')
     const dispatch = useDispatch();
     const [jobPerPage] = useState(6);
-
-
+    
+    
     const fetchJobs = async()=>{
         await dispatch(getJobs()).unwrap()
     }
-
+    
     useEffect(()=>{
-        fetchJobs()
+        fetchJobs();
     },[])
-   
-        const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
-        const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
-        const currentJobs = jobs?.slice(firstIndex,lastIndex);
-        const totalPage = Math.ceil(jobs?.length/jobPerPage);//4
+    
+
+    const lastIndex = currentPage*jobPerPage //1 * 6 = 6;
+    const firstIndex = lastIndex-jobPerPage //6 - 6 = 0;
+    const currentJobs = jobs?.slice(firstIndex,lastIndex);
+    const totalPage = Math.ceil(jobs?.length/jobPerPage);//4
     const filterJobs = (jobs)=>{
         return jobs?.filter(job=>job.title.toLowerCase().includes(search.trim().toLowerCase()));
     }
@@ -46,9 +49,9 @@ const Home = ()=>{
     }
 
     const jobData = isSearch ?  filterJobs(jobs) : filterJobs(currentJobs)
-
+    
     const paginationProps = {jobs,totalPage,firstIndex,lastIndex,currentPage,setCurrentPage,setIsSearch,setSearch}
-
+    
     const browseJob = (e)=>{
         const element = browseId.current
         const position = element.offsetTop;
@@ -57,8 +60,8 @@ const Home = ()=>{
             top:position
         })
     }
-
-   
+    
+    
     return (
         <section className="container" >
             {/* section1 */}

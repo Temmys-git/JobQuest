@@ -16,11 +16,9 @@ const appStateSlice = createSlice({
     reducers:{
         setModal:(state,action)=>{
             state.modal = action.payload
-            console.log(action.payload)
         },
         setJobId:(state,action)=>{
             state.jobId = action.payload
-            console.log(action.payload)
         }
     },
 })

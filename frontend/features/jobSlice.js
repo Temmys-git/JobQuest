@@ -131,7 +131,7 @@ const jobSlice = createSlice({
                     })
                     // store job
                     .addCase(storeJob.fulfilled,(state,action)=>{
-                        state.jobs = action.payload
+                        state.jobs.push(action.payload.jobs)
                         state.status = 'success'
                     })
                     .addCase(storeJob.pending,(state,action)=>{

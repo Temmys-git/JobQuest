@@ -14,23 +14,22 @@ const SignUp =()=> {
     const [password,setPassword] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {status} = useSelector((state)=>state.user)
-    const user = {email,password,name} 
-    // const user = {
-    //         name:"yunus abdullateef",
-    //         email:"abhn@gmail.com",
-    //         password:"123456"
-    //       }
-    console.log(user)
+    const {status,user} = useSelector((state)=>state.user)
+    const _user = {email,password,name} 
+ 
 
     const handleSignUp =async(e)=>{
         e.preventDefault()
-        await dispatch(register(user)).unwrap()
-        if(status === 'success'){
-            navigate('/')
-        }
+        await dispatch(register(_user)).unwrap()
     }
   
+    
+    useEffect(()=>{
+        if(user){
+            navigate('/')
+        }
+    },[user])
+   
     return (
         <section>
 

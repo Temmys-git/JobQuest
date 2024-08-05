@@ -4,8 +4,6 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 const applicantRoutes = express.Router();
 
-
-
 applicantRoutes.route('/').get(authMiddleware,myApplication);
 applicantRoutes.route('/:id/apply').post(applyJob);
 applicantRoutes.route('/:id/accept').patch(acceptJob);
